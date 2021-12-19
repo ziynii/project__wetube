@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/js/all.js';
 import styled from 'styled-components';
+import SideNav from './SideNav';
 
 const Wrapper = styled.header`
   display: flex;
@@ -13,11 +14,15 @@ const HeaderLeft = styled.div`
   display: flex;
   flex-basis: 20%;
   align-items: center;
-  border-right: 1px solid ${(props) => props.theme.subTextColor};
+	button {
+		outline: none;
+		border: 0;
+		background-color: transparent;
+	}
   svg {
     font-size: 18px;
     color: ${(props) => props.theme.subTextColor};
-		cursor: pointer;
+    cursor: pointer;
   }
   img {
     width: 100px;
@@ -56,7 +61,7 @@ const HeaderRight = styled.div`
     font-size: 18px;
     margin-right: 12px;
     color: ${(props) => props.theme.subTextColor};
-		cursor: pointer;
+    cursor: pointer;
   }
 `;
 
@@ -70,23 +75,33 @@ const Login = styled.button`
 `;
 
 const Header = () => {
+  const [openNav, setOpenNav] = useState(false);
+  const onToggleNav = () => {
+    setOpenNav((prev) => !prev);
+  };
+
   return (
-    <Wrapper>
-      <HeaderLeft>
-        <i className="fas fa-align-left"></i>
-        <img src="logo.png" alt="youtube 로고" />
-      </HeaderLeft>
-      <Search>
-        <Input placeholder="Search" />
-        <i className="fas fa-search"></i>
-      </Search>
-      <HeaderRight>
-        <i className="far fa-plus-square"></i>
-        <i className="far fa-heart"></i>
-        <i className="far fa-bell"></i>
-      </HeaderRight>
-      <Login>Sign in</Login>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <HeaderLeft>
+          <button onClick={onToggleNav}>
+            <i className="fas fa-align-left"></i>
+          </button>
+          <img src="logo.png" alt="youtube 로고" />
+        </HeaderLeft>
+        <Search>
+          <Input placeholder="Search" />
+          <i className="fas fa-search"></i>
+        </Search>
+        <HeaderRight>
+          <i className="far fa-plus-square"></i>
+          <i className="far fa-heart"></i>
+          <i className="far fa-bell"></i>
+        </HeaderRight>
+        <Login>Sign in</Login>
+      </Wrapper>
+      {openNav ? <SideNav /> : null}
+    </>
   );
 };
 
