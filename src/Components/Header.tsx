@@ -1,4 +1,10 @@
-import React, { FormEvent, useRef } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  SyntheticEvent,
+  useRef,
+  useState,
+} from 'react';
 import '@fortawesome/fontawesome-free/js/all.js';
 import styled from 'styled-components';
 
@@ -91,15 +97,24 @@ const Login = styled.button`
 interface IHeaderProps {
   setOpenNav: (prev: any) => void;
   onSearch: (query: string) => void;
+  keyword: string;
+  setKeyword: (keyword: string) => void;
 }
 
-const Header = ({ setOpenNav, onSearch }: IHeaderProps) => {
+const Header = ({
+  setOpenNav,
+  onSearch,
+  keyword,
+  setKeyword,
+}: IHeaderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearch = () => {
-    const value: any = inputRef.current?.value;
-    console.log(value);
-    onSearch(value);
+    onSearch(keyword);
+  };
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
   };
 
   const onClick = (event: React.PointerEvent<HTMLButtonElement>) => {
@@ -122,7 +137,13 @@ const Header = ({ setOpenNav, onSearch }: IHeaderProps) => {
           <img src="logo.png" alt="youtube 로고" />
         </HeaderLeft>
         <Search>
-          <Input ref={inputRef} placeholder="Search" onKeyPress={onKeyPress} />
+          <Input
+            value={keyword}
+            ref={inputRef}
+            placeholder="Search"
+            onKeyPress={onKeyPress}
+            onChange={onChange}
+          />
           <SubmitBtn onClick={onClick}>
             <i className="fas fa-search"></i>
           </SubmitBtn>
