@@ -12,7 +12,7 @@ const Layout = styled.div`
 
 const Side = styled.div`
   position: fixed;
-	border-right: 1px solid lightgray;
+  border-right: 1px solid lightgray;
 `;
 
 const Main = styled.div<{ openNav: boolean }>`
@@ -48,6 +48,14 @@ export interface IVideo {
 function App({ youtube }: IYoutube) {
   const [openNav, setOpenNav] = useState(true);
   const [videos, setVideos] = useState<IVideo[]>([]);
+  const [isQuery, setIsQuery] = useState<string>();
+
+  const search = (query: string) => {
+    youtube
+      .search(query) //
+      .then((videos: []) => setVideos(videos));
+    setIsQuery(query);
+  };
 
   useEffect(() => {
     youtube
@@ -57,16 +65,16 @@ function App({ youtube }: IYoutube) {
 
   return (
     <BrowserRouter>
-      <Header setOpenNav={setOpenNav} />
+      <Header setOpenNav={setOpenNav} onSearch={search} />
       <Layout>
         <Side>{openNav ? <SideNav /> : null}</Side>
         <Main openNav={openNav}>
           <Routes>
             <Route
               path="/"
-              element={<Home openNav={openNav} videos={videos} />}
+              element={<Home isQuery={isQuery} openNav={openNav} videos={videos} />}
             />
-            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/:videoId" element={<Detail />} />
           </Routes>
         </Main>
       </Layout>
