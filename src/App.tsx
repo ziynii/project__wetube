@@ -49,6 +49,7 @@ function App({ youtube }: IYoutube) {
   const [openNav, setOpenNav] = useState(true);
   const [videos, setVideos] = useState<IVideo[]>([]);
   const [isQuery, setIsQuery] = useState<string>();
+  const [keyword, setKeyword] = useState<string>('');
 
   const search = (query: string) => {
     youtube
@@ -57,22 +58,35 @@ function App({ youtube }: IYoutube) {
     setIsQuery(query);
   };
 
-  useEffect(() => {
+  const mostPopulars = () => {
     youtube
       .mostPopular() //
       .then((videos: []) => setVideos(videos));
+    setIsQuery('');
+		setKeyword('')
+  };
+
+  useEffect(() => {
+    mostPopulars();
   }, []);
 
   return (
     <BrowserRouter>
-      <Header setOpenNav={setOpenNav} onSearch={search} />
+      <Header
+        setOpenNav={setOpenNav}
+        onSearch={search}
+        keyword={keyword}
+        setKeyword={setKeyword}
+      />
       <Layout>
-        <Side>{openNav ? <SideNav /> : null}</Side>
+        <Side>{openNav ? <SideNav popular={mostPopulars} /> : null}</Side>
         <Main openNav={openNav}>
           <Routes>
             <Route
               path="/"
-              element={<Home isQuery={isQuery} openNav={openNav} videos={videos} />}
+              element={
+                <Home isQuery={isQuery} openNav={openNav} videos={videos} />
+              }
             />
             <Route path="/detail/:videoId" element={<Detail />} />
           </Routes>
