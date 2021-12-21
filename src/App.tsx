@@ -23,6 +23,7 @@ interface IYoutube {
   youtube: {
     mostPopular: () => any;
     search: (query: string) => any;
+    channel: (channelId: string) => any;
   };
 }
 
@@ -38,6 +39,18 @@ export interface IVideo {
     channelTitle: string;
     description: string;
     title: string;
+    publishedAt: string;
+    channelId: string;
+    thumbnails: {
+      medium: IThumbnails;
+      default: IThumbnails;
+    };
+  };
+}
+
+export interface IChannel {
+  id: string;
+  snippet: {
     thumbnails: {
       medium: IThumbnails;
       default: IThumbnails;
@@ -50,6 +63,8 @@ function App({ youtube }: IYoutube) {
   const [videos, setVideos] = useState<IVideo[]>([]);
   const [isQuery, setIsQuery] = useState<string>();
   const [keyword, setKeyword] = useState<string>('');
+  const [channelInfo, setChannelInfo] = useState<IChannel[]>([]);
+
 
   const search = (query: string) => {
     youtube
@@ -63,7 +78,13 @@ function App({ youtube }: IYoutube) {
       .mostPopular() //
       .then((videos: []) => setVideos(videos));
     setIsQuery('');
-		setKeyword('')
+    setKeyword('');
+  };
+
+  const channel = (channelId: string) => {
+    youtube
+      .channel(channelId) //
+      .then((result: []) => setChannelInfo(result));
   };
 
   useEffect(() => {
@@ -77,6 +98,7 @@ function App({ youtube }: IYoutube) {
         onSearch={search}
         keyword={keyword}
         setKeyword={setKeyword}
+        popular={mostPopulars}
       />
       <Layout>
         <Side>{openNav ? <SideNav popular={mostPopulars} /> : null}</Side>
@@ -88,7 +110,17 @@ function App({ youtube }: IYoutube) {
                 <Home isQuery={isQuery} openNav={openNav} videos={videos} />
               }
             />
-            <Route path="/detail/:videoId" element={<Detail />} />
+            <Route
+              path="/detail/:videoId"
+              element={
+                <Detail
+                  videos={videos}
+                  openNav={openNav}
+                  channel={channel}
+                  channelInfo={channelInfo}
+                />
+              }
+            />
           </Routes>
         </Main>
       </Layout>
