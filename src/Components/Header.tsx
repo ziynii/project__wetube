@@ -1,12 +1,8 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  SyntheticEvent,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 import '@fortawesome/fontawesome-free/js/all.js';
 import styled from 'styled-components';
+import logo from '../image/logo.png';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -99,6 +95,7 @@ interface IHeaderProps {
   onSearch: (query: string) => void;
   keyword: string;
   setKeyword: (keyword: string) => void;
+  popular: () => void;
 }
 
 const Header = ({
@@ -106,11 +103,14 @@ const Header = ({
   onSearch,
   keyword,
   setKeyword,
+  popular,
 }: IHeaderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     onSearch(keyword);
+    navigate('/');
   };
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +134,9 @@ const Header = ({
           <button onClick={() => setOpenNav((prev: boolean) => !prev)}>
             <i className="fas fa-align-left"></i>
           </button>
-          <img src="logo.png" alt="youtube 로고" />
+          <Link to="/" onClick={popular}>
+            <img src={logo} alt="youtube 로고" />
+          </Link>
         </HeaderLeft>
         <Search>
           <Input
