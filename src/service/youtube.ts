@@ -3,7 +3,7 @@ interface IRequestOption {
   redirect: RequestRedirect | undefined;
 }
 
-class Youtube  {
+class Youtube {
   key: string;
   getRequestOptions: IRequestOption;
   constructor(key: string) {
@@ -16,7 +16,7 @@ class Youtube  {
 
   async mostPopular() {
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=28&key=${this.key}`,
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=28&regionCode=kr&key=${this.key}`,
       this.getRequestOptions
     );
     const result = await response.json();
@@ -33,6 +33,15 @@ class Youtube  {
       ...item,
       id: item.id.videoId,
     }));
+  }
+
+  async channel(channelId: string) {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${this.key}`,
+      this.getRequestOptions
+    );
+    const result = await response.json();
+    return result.items;
   }
 }
 
