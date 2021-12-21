@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IChannel, IVideo } from '../App';
 import VideoItem from '../Components/VideoItem';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 
 interface IDetailProps {
   videos: IVideo[];
@@ -117,6 +119,12 @@ const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
   }, []);
 
   return (
+		<>
+		 <HelmetProvider>
+        <Helmet>
+          <title>{video?.snippet.title}</title>
+        </Helmet>
+      </HelmetProvider>
     <Wrapper>
       <ColLeft openNav={openNav}>
         <IFrame
@@ -152,6 +160,7 @@ const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
         </Playlist>
       </ColRight>
     </Wrapper>
+		</>
   );
 };
 
