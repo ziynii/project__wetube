@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import App from './App';
+import Youtube from './service/youtube';
 import { lightTheme } from './theme';
+
+document.cookie = 'cookie1=value1; SameSite=Lax';
+document.cookie = 'cookie2=value2; SameSite=None; Secure';
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -55,6 +59,7 @@ body {
 	font-weight: 300;
 	font-family: 'Source Sans Pro', sans-serif;	
 	line-height: 1.2;
+	overflow-x: hidden;
 }
 a {
 	text-decoration: none;
@@ -65,11 +70,13 @@ button {
 }
 `;
 
+const youtube = new Youtube(process.env.REACT_APP_API_KEY! as string);
+
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={lightTheme}>
       <GlobalStyle />
-      <App />
+      <App youtube={youtube} />
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
