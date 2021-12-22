@@ -5,7 +5,6 @@ import { IChannel, IVideo } from '../App';
 import VideoItem from '../Components/VideoItem';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
-
 interface IDetailProps {
   videos: IVideo[];
   openNav: boolean;
@@ -17,11 +16,20 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: 20px;
+
+  @media all and (max-width: 1023px) {
+    flex-direction: column;
+    padding: 0px 16px;
+  }
 `;
 
 const ColLeft = styled.div<{ openNav: boolean }>`
   flex-basis: ${(props) => (props.openNav ? '75%' : '75%')};
   padding-left: ${(props) => (props.openNav ? '20px' : '60px')};
+
+  @media all and (max-width: 1023px) {
+    padding-left: 0px;
+  }
 `;
 
 const ColRight = styled.div<{ openNav: boolean }>`
@@ -35,9 +43,25 @@ const ColRight = styled.div<{ openNav: boolean }>`
       margin-bottom: 4px;
     }
   }
+
+  @media all and (max-width: 1023px) {
+    padding-right: 0px;
+  }
 `;
 
-const IFrame = styled.iframe``;
+const IFrame = styled.iframe`
+	width: 100%;
+	height: 600px;
+
+	@media all and (min-width: 768px) and (max-width: 1023px) {
+    height: 500px;
+  }
+
+  @media all and (max-width: 767px) {
+    height: 300px;
+  }
+	
+`;
 
 const Title = styled.h2`
   font-size: 18px;
@@ -57,8 +81,8 @@ const Channel = styled.div`
   align-items: center;
   border-bottom: 1px solid lightgray;
   border-top: 1px solid lightgray;
-	padding: 24px 0;
-	margin-top: 24px;
+  padding: 24px 0;
+  margin-top: 24px;
   .channel__layout {
     display: flex;
     align-items: center;
@@ -91,13 +115,23 @@ const SubscriptBtn = styled.button`
 
 const Description = styled.p`
   width: 60%;
-  margin-top: 24px;
+  margin: 24px 0px;
   font-size: 14px;
+  line-height: 2.4rem;
   span {
+    background-color: ${(props) => props.theme.mainTextColor};
+    border-radius: 4px;
+    color: white;
+    padding: 4px 8px;
     font-size: 24px;
     font-weight: 400;
-    line-height: 48px;
   }
+
+	@media all and (max-width: 1023px) {
+		width: 100%;
+    border-bottom: 1px solid lightgray;
+  }
+	
 `;
 
 const Playlist = styled.ul`
@@ -119,48 +153,51 @@ const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
   }, []);
 
   return (
-		<>
-		 <HelmetProvider>
+    <>
+      <HelmetProvider>
         <Helmet>
           <title>{video?.snippet.title}</title>
         </Helmet>
       </HelmetProvider>
-    <Wrapper>
-      <ColLeft openNav={openNav}>
-        <IFrame
-          datatype="text/html"
-          width="100%"
-          height="600px"
-          src={`https://www.youtube.com/embed/${video?.id}`}
-          frameBorder="0"
-          allowFullScreen
-        ></IFrame>
-        <Title>{video?.snippet.title}</Title>
-        <Time>{videoDate?.replace('T', ' ').substring(0, 10)}</Time>
-        <Channel>
-          <div className="channel__layout">
-            <img src={channelInfo[0]?.snippet.thumbnails.default.url} alt="채널 썸네일" />
-            <ChannelTitle>{video?.snippet.channelTitle}</ChannelTitle>
-          </div>
-          <SubscriptBtn>Subscript</SubscriptBtn>
-        </Channel>
-        <Description>
-          <span>Description</span>
-          <br />
-          {video?.snippet.description}
-        </Description>
-      </ColLeft>
-      <ColRight openNav={openNav}>
-        <Playlist>
-          {videos.slice(0, 10).map((video) => (
-            <Link to={`/detail/${video.id}`} key={video.id}>
-              <VideoItem video={video} openNav={openNav} />
-            </Link>
-          ))}
-        </Playlist>
-      </ColRight>
-    </Wrapper>
-		</>
+      <Wrapper>
+        <ColLeft openNav={openNav}>
+          <IFrame
+            datatype="text/html"
+            width="100%"
+            height="300px"
+            src={`https://www.youtube.com/embed/${video?.id}`}
+            frameBorder="0"
+            allowFullScreen
+          ></IFrame>
+          <Title>{video?.snippet.title}</Title>
+          <Time>{videoDate?.replace('T', ' ').substring(0, 10)}</Time>
+          <Channel>
+            <div className="channel__layout">
+              <img
+                src={channelInfo[0]?.snippet.thumbnails.default.url}
+                alt="채널 썸네일"
+              />
+              <ChannelTitle>{video?.snippet.channelTitle}</ChannelTitle>
+            </div>
+            <SubscriptBtn>Subscript</SubscriptBtn>
+          </Channel>
+          <Description>
+            <span>Description</span>
+            <br />
+            {video?.snippet.description}
+          </Description>
+        </ColLeft>
+        <ColRight openNav={openNav}>
+          <Playlist>
+            {videos.slice(0, 10).map((video) => (
+              <Link to={`/detail/${video.id}`} key={video.id}>
+                <VideoItem video={video} openNav={openNav} />
+              </Link>
+            ))}
+          </Playlist>
+        </ColRight>
+      </Wrapper>
+    </>
   );
 };
 

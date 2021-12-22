@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IVideo } from '../App';
 import VideoItem from '../Components/VideoItem';
@@ -13,6 +14,14 @@ const Vidoelist = styled.ul`
   grid-template-columns: repeat(4, 1fr);
   column-gap: 10px;
   row-gap: 16px;
+
+  @media all and (min-width: 768px) and (max-width: 1023px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media all and (max-width: 767px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 const VidoeListTitle = styled.h3`
@@ -20,9 +29,8 @@ const VidoeListTitle = styled.h3`
   font-size: 16px;
   font-weight: 400;
   margin-bottom: 12px;
-  text-transform: uppercase;
   span {
-		color : ${(props) => props.theme.mainTextColor};
+    color: ${(props) => props.theme.mainTextColor};
     font-weight: bold;
   }
 `;
@@ -51,7 +59,9 @@ const Home = ({ videos, openNav, isQuery }: IVideosProps) => {
         )}
         <Vidoelist>
           {videos.map((video) => (
-            <VideoItem video={video} key={video.id} openNav={openNav} />
+            <Link to={`/detail/${video.id}`} key={video.id}>
+              <VideoItem video={video} openNav={openNav} />
+            </Link>
           ))}
         </Vidoelist>
       </Wrapper>

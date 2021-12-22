@@ -74,11 +74,13 @@ const SideNav = ({ popular }: ISideNav) => {
       <Items>
         <NavSubTitle>MENU</NavSubTitle>
         <Item onClick={popular}>
-          <div className="select__item"></div>
-          <span className="select__item-text">
-            <i className="fas fa-home"></i>
-            Home
-          </span>
+          <Link to="/">
+            <div className="select__item"></div>
+            <span className="select__item-text">
+              <i className="fas fa-home"></i>
+              Home
+            </span>
+          </Link>
         </Item>
         <Item>
           <i className="fas fa-burn"></i> Trending

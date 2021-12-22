@@ -17,6 +17,11 @@ const Side = styled.div`
 
 const Main = styled.div<{ openNav: boolean }>`
   margin-left: ${(props) => (props.openNav ? '260px' : 0)};
+
+	@media all and (max-width: 1023px) {
+    margin-left : 0
+  }
+	
 `;
 
 interface IYoutube {

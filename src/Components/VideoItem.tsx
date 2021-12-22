@@ -14,10 +14,13 @@ const Video = styled.li<{ openNav: boolean }>`
     border-radius: 4px;
     width: 100%;
     box-shadow: 4px 4px 12px -3px rgba(0, 0, 0, 0.8);
-		transition: transform 200ms ease-in;
-		&:hover {
-			transform : scale(1.02)
-		}
+    transition: transform 200ms ease-in;
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+  @media all and (max-width: 1023px) {
+    width: 100%;
   }
 `;
 

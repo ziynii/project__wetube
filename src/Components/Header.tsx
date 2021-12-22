@@ -14,12 +14,17 @@ const Wrapper = styled.header`
   top: 0;
   z-index: 99;
   background-color: white;
+
+  @media all and (max-width: 1023px) {
+    padding: 20px 20px;
+  }
 `;
 
 const HeaderLeft = styled.div`
   display: flex;
   flex-basis: 20%;
   align-items: center;
+	margin-top: 4px;
   button {
     outline: none;
     border: 0;
@@ -36,11 +41,21 @@ const HeaderLeft = styled.div`
     width: 100px;
     margin-left: 24px;
   }
+
+  @media all and (max-width: 1023px) {
+    img {
+      margin-left: 12px;
+			width: 75px;
+    }
+		button {
+			font-size: 14px;
+		}
+  }
 `;
 
 const Search = styled.form`
   text-align: center;
-  flex-basis: 50%;
+  flex-basis: 60%;
   position: relative;
 `;
 
@@ -58,14 +73,14 @@ const SubmitBtn = styled.button`
   border: 0;
   background-color: transparent;
   position: absolute;
-  right: 50px;
+  right: 10%;
   top: 10px;
   color: ${(props) => props.theme.subTextColor};
   cursor: pointer;
 `;
 
 const HeaderRight = styled.div`
-  flex-basis: 25%;
+  flex-basis: 15%;
   display: flex;
   justify-content: flex-end;
   margin-right: 12px;
@@ -79,6 +94,17 @@ const HeaderRight = styled.div`
       color: ${(props) => props.theme.mainTextColor};
     }
   }
+
+  @media all and (max-width: 1023px) {
+		svg {
+			font-size: 14px;
+			margin-right: 6px;
+		}
+
+    svg:last-child {
+      margin-right: 0;
+    }
+  }
 `;
 
 const Login = styled.button`
@@ -88,6 +114,10 @@ const Login = styled.button`
   border: none;
   background-color: ${(props) => props.theme.accentColor};
   color: white;
+
+  @media all and (max-width: 1023px) {
+    display: none;
+  }
 `;
 
 interface IHeaderProps {
