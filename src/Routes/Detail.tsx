@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IChannel, IVideo } from '../App';
@@ -8,8 +8,9 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 interface IDetailProps {
   videos: IVideo[];
   openNav: boolean;
-  channel: (channelId: string) => any;
-  channelInfo: IChannel[];
+  youtube: {
+    channel: (channelId: string) => any;
+  };
 }
 
 const Wrapper = styled.div`
@@ -29,11 +30,12 @@ const ColLeft = styled.div<{ openNav: boolean }>`
 
   @media all and (max-width: 1023px) {
     padding-left: 0px;
+    margin-top: 12px;
   }
 `;
 
 const ColRight = styled.div<{ openNav: boolean }>`
-  flex-basis: ${(props) => (props.openNav ? '20%' : '24%')};
+  flex-basis: ${(props) => (props.openNav ? '28%' : '24%')};
   padding-right: 60px;
   li {
     padding-bottom: 9px;
@@ -53,6 +55,7 @@ const IFrameWrap = styled.div`
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
+  z-index: -1;
 `;
 
 const IFrame = styled.iframe`
@@ -116,14 +119,6 @@ const Description = styled.p`
   margin: 24px 0px;
   font-size: 14px;
   line-height: 2.4rem;
-  span {
-    background-color: ${(props) => props.theme.mainTextColor};
-    border-radius: 4px;
-    color: white;
-    padding: 4px 8px;
-    font-size: 24px;
-    font-weight: 400;
-  }
 
   @media all and (max-width: 1023px) {
     width: 100%;
@@ -136,8 +131,9 @@ const Playlist = styled.ul`
   width: 100%;
 `;
 
-const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
+const Detail = ({ videos, openNav, youtube }: IDetailProps) => {
   const { videoId } = useParams();
+  const [channelInfo, setChannelInfo] = useState<IChannel[]>([]);
 
   const video = videos.find((video) => {
     return video.id === videoId;
@@ -146,8 +142,10 @@ const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
   const videoDate = video?.snippet.publishedAt;
 
   useEffect(() => {
-    channel(video?.snippet.channelId! as string);
-  }, []);
+    youtube
+      .channel(video?.snippet.channelId! as string) //
+      .then((result: []) => setChannelInfo(result));
+  }, [video]);
 
   return (
     <>
@@ -171,26 +169,27 @@ const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
           <Channel>
             <div className="channel__layout">
               <img
-                src={channelInfo[0]?.snippet.thumbnails.default.url}
+                src={
+                  channelInfo && channelInfo[0]?.snippet.thumbnails.default.url
+                }
                 alt="채널 썸네일"
               />
               <ChannelTitle>{video?.snippet.channelTitle}</ChannelTitle>
             </div>
             <SubscriptBtn>Subscript</SubscriptBtn>
           </Channel>
-          <Description>
-            <span>Description</span>
-            <br />
-            {video?.snippet.description}
-          </Description>
+          <Description>{video?.snippet.description}</Description>
         </ColLeft>
         <ColRight openNav={openNav}>
           <Playlist>
-            {videos.filter((video) => video.id !== videoId).slice(0, 10).map((video) => (
-              <Link to={`/detail/${video.id}`} key={video.id}>
-                <VideoItem video={video} openNav={openNav} />
-              </Link>
-            ))}
+            {videos
+              .filter((video) => video.id !== videoId)
+              .slice(0, 10)
+              .map((video) => (
+                <Link to={`/detail/${video.id}`} key={video.id}>
+                  <VideoItem video={video} openNav={openNav} />
+                </Link>
+              ))}
           </Playlist>
         </ColRight>
       </Wrapper>

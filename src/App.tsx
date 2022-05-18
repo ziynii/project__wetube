@@ -18,10 +18,9 @@ const Side = styled.div`
 const Main = styled.div<{ openNav: boolean }>`
   margin-left: ${(props) => (props.openNav ? '260px' : 0)};
 
-	@media all and (max-width: 1023px) {
-    margin-left : 0
+  @media all and (max-width: 1023px) {
+    margin-left: 0;
   }
-	
 `;
 
 interface IYoutube {
@@ -68,8 +67,6 @@ function App({ youtube }: IYoutube) {
   const [videos, setVideos] = useState<IVideo[]>([]);
   const [isQuery, setIsQuery] = useState<string>();
   const [keyword, setKeyword] = useState<string>('');
-  const [channelInfo, setChannelInfo] = useState<IChannel[]>([]);
-
 
   const search = (query: string) => {
     youtube
@@ -84,12 +81,6 @@ function App({ youtube }: IYoutube) {
       .then((videos: []) => setVideos(videos));
     setIsQuery('');
     setKeyword('');
-  };
-
-  const channel = (channelId: string) => {
-    youtube
-      .channel(channelId) //
-      .then((result: []) => setChannelInfo(result));
   };
 
   useEffect(() => {
@@ -118,12 +109,7 @@ function App({ youtube }: IYoutube) {
             <Route
               path="/detail/:videoId"
               element={
-                <Detail
-                  videos={videos}
-                  openNav={openNav}
-                  channel={channel}
-                  channelInfo={channelInfo}
-                />
+                <Detail videos={videos} openNav={openNav} youtube={youtube} />
               }
             />
           </Routes>
