@@ -7,13 +7,17 @@ import VideoItem from '../Components/VideoItem';
 
 const Wrapper = styled.div`
   padding: 20px 60px;
+
+	@media all and (max-width: 767px) {
+    padding: 20px 20px;
+  }
 `;
 
 const Vidoelist = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 10px;
-  row-gap: 16px;
+  column-gap: 16px;
+  row-gap: 24px;
 
   @media all and (min-width: 768px) and (max-width: 1023px) {
     grid-template-columns: repeat(2, 1fr);
@@ -27,11 +31,10 @@ const Vidoelist = styled.ul`
 const VidoeListTitle = styled.h3`
   color: ${(props) => props.theme.subTextColor};
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 700;
   margin-bottom: 12px;
   span {
     color: ${(props) => props.theme.mainTextColor};
-    font-weight: bold;
   }
 `;
 
