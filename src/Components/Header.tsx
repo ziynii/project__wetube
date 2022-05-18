@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useRef } from 'react';
 import '@fortawesome/fontawesome-free/js/all.js';
 import styled from 'styled-components';
 import logo from '../image/logo.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import SearchInput from './SearchInput';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -12,7 +12,7 @@ const Wrapper = styled.header`
   padding: 20px 60px;
   position: fixed;
   top: 0;
-  z-index: 99;
+  z-index: 500;
   background-color: white;
 
   @media all and (max-width: 1023px) {
@@ -24,7 +24,7 @@ const HeaderLeft = styled.div`
   display: flex;
   flex-basis: 20%;
   align-items: center;
-	margin-top: 4px;
+  margin-top: 4px;
   button {
     outline: none;
     border: 0;
@@ -45,38 +45,12 @@ const HeaderLeft = styled.div`
   @media all and (max-width: 1023px) {
     img {
       margin-left: 12px;
-			width: 75px;
+      width: 75px;
     }
-		button {
-			font-size: 14px;
-		}
+    button {
+      font-size: 14px;
+    }
   }
-`;
-
-const Search = styled.form`
-  text-align: center;
-  flex-basis: 60%;
-  position: relative;
-`;
-
-const Input = styled.input`
-  width: 90%;
-  padding: 10px 16px;
-  border-radius: 24px;
-  background-color: rgba(0, 0, 0, 0.05);
-  border: 0;
-  outline: none;
-`;
-
-const SubmitBtn = styled.button`
-  outline: none;
-  border: 0;
-  background-color: transparent;
-  position: absolute;
-  right: 10%;
-  top: 10px;
-  color: ${(props) => props.theme.subTextColor};
-  cursor: pointer;
 `;
 
 const HeaderRight = styled.div`
@@ -96,10 +70,10 @@ const HeaderRight = styled.div`
   }
 
   @media all and (max-width: 1023px) {
-		svg {
-			font-size: 14px;
-			margin-right: 6px;
-		}
+    svg {
+      font-size: 14px;
+      margin-right: 6px;
+    }
 
     svg:last-child {
       margin-right: 0;
@@ -109,7 +83,7 @@ const HeaderRight = styled.div`
 
 const Login = styled.button`
   flex-basis: 5%;
-  padding: 6px 0;
+  padding: 10px 0;
   border-radius: 4px;
   border: none;
   background-color: ${(props) => props.theme.accentColor};
@@ -135,28 +109,6 @@ const Header = ({
   setKeyword,
   popular,
 }: IHeaderProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
-
-  const handleSearch = () => {
-    onSearch(keyword);
-    navigate('/');
-  };
-
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
-  const onClick = (event: React.PointerEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    handleSearch();
-  };
-
-  const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event?.key === 'Enter') {
-      handleSearch();
-    }
-  };
   return (
     <>
       <Wrapper>
@@ -168,18 +120,11 @@ const Header = ({
             <img src={logo} alt="youtube 로고" />
           </Link>
         </HeaderLeft>
-        <Search>
-          <Input
-            value={keyword}
-            ref={inputRef}
-            placeholder="Search"
-            onKeyPress={onKeyPress}
-            onChange={onChange}
-          />
-          <SubmitBtn onClick={onClick}>
-            <i className="fas fa-search"></i>
-          </SubmitBtn>
-        </Search>
+        <SearchInput
+          setKeyword={setKeyword}
+          onSearch={onSearch}
+          keyword={keyword}
+        />
         <HeaderRight>
           <i className="far fa-plus-square"></i>
           <i className="far fa-heart"></i>
