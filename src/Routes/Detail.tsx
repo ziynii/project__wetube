@@ -49,18 +49,16 @@ const ColRight = styled.div<{ openNav: boolean }>`
   }
 `;
 
+const IFrameWrap = styled.div`
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+`;
+
 const IFrame = styled.iframe`
-	width: 100%;
-	height: 600px;
-
-	@media all and (min-width: 768px) and (max-width: 1023px) {
-    height: 500px;
-  }
-
-  @media all and (max-width: 767px) {
-    height: 300px;
-  }
-	
+  position: absolute;
+  width: 100%;
+  height: 100%;
 `;
 
 const Title = styled.h2`
@@ -127,11 +125,10 @@ const Description = styled.p`
     font-weight: 400;
   }
 
-	@media all and (max-width: 1023px) {
-		width: 100%;
+  @media all and (max-width: 1023px) {
+    width: 100%;
     border-bottom: 1px solid lightgray;
   }
-	
 `;
 
 const Playlist = styled.ul`
@@ -161,14 +158,14 @@ const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
       </HelmetProvider>
       <Wrapper>
         <ColLeft openNav={openNav}>
-          <IFrame
-            datatype="text/html"
-            width="100%"
-            height="300px"
-            src={`https://www.youtube.com/embed/${video?.id}`}
-            frameBorder="0"
-            allowFullScreen
-          ></IFrame>
+          <IFrameWrap>
+            <IFrame
+              datatype="text/html"
+              src={`https://www.youtube.com/embed/${video?.id}`}
+              frameBorder="0"
+              allowFullScreen
+            ></IFrame>
+          </IFrameWrap>
           <Title>{video?.snippet.title}</Title>
           <Time>{videoDate?.replace('T', ' ').substring(0, 10)}</Time>
           <Channel>
