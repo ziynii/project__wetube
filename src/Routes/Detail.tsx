@@ -186,7 +186,7 @@ const Detail = ({ videos, openNav, channel, channelInfo }: IDetailProps) => {
         </ColLeft>
         <ColRight openNav={openNav}>
           <Playlist>
-            {videos.slice(0, 10).map((video) => (
+            {videos.filter((video) => video.id !== videoId).slice(0, 10).map((video) => (
               <Link to={`/detail/${video.id}`} key={video.id}>
                 <VideoItem video={video} openNav={openNav} />
               </Link>
