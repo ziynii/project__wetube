@@ -6,12 +6,14 @@ interface ISearchProps {
   onSearch: (query: string) => void;
   keyword: string;
   setKeyword: (keyword: string) => void;
+  setOpenSearch: (value: boolean) => void;
 }
 
 const Search = styled.form`
-  text-align: center;
-  flex-basis: 60%;
+  width: 60%;
+  margin: 0 auto;
   position: relative;
+  z-index: 600;
 `;
 
 const Input = styled.input`
@@ -34,12 +36,17 @@ const SubmitBtn = styled.button`
   cursor: pointer;
 `;
 
-const SearchInput = ({ onSearch, setKeyword, keyword }: ISearchProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+const SearchInput = ({
+  onSearch,
+  setKeyword,
+  keyword,
+  setOpenSearch,
+}: ISearchProps) => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
     onSearch(keyword);
+    setOpenSearch(false);
     navigate('/');
   };
 
@@ -62,7 +69,6 @@ const SearchInput = ({ onSearch, setKeyword, keyword }: ISearchProps) => {
     <Search>
       <Input
         value={keyword}
-        ref={inputRef}
         placeholder="Search"
         onKeyPress={onKeyPress}
         onChange={onChange}
