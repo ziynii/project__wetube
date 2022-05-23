@@ -7,7 +7,11 @@ import Detail from './Routes/Detail';
 import Home from './Routes/Home';
 
 const Layout = styled.div`
-  margin-top: 80px;
+  margin-top: 88px;
+
+  @media all and (max-width: 768px) {
+    margin-top: 60px;
+  }
 `;
 
 const Side = styled.div`
@@ -110,12 +114,7 @@ function App({ youtube }: IYoutube) {
             <Route
               path="/detail/:videoId"
               element={
-                <Detail
-                  videos={videos}
-                  openNav={openNav}
-                  setOpenNav={setOpenNav}
-                  youtube={youtube}
-                />
+                <Detail videos={videos} openNav={openNav} setOpenNav={setOpenNav} youtube={youtube} />
               }
             />
           </Routes>
