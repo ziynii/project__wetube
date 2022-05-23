@@ -11,6 +11,7 @@ interface IDetailProps {
   youtube: {
     channel: (channelId: string) => any;
   };
+  setOpenNav: (prev: any) => void;
 }
 
 const Wrapper = styled.div`
@@ -55,7 +56,7 @@ const IFrameWrap = styled.div`
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
-  z-index: -1;
+  z-index: 1;
 `;
 
 const IFrame = styled.iframe`
@@ -69,6 +70,11 @@ const Title = styled.h2`
   font-weight: bold;
   margin-top: 12px;
   color: ${(props) => props.theme.mainTextColor};
+
+  @media all and (max-width: 767px) {
+    font-size: 14px;
+    line-height: 1.2rem;
+  }
 `;
 
 const Time = styled.p`
@@ -84,10 +90,12 @@ const Channel = styled.div`
   border-top: 1px solid lightgray;
   padding: 24px 0;
   margin-top: 24px;
+
   .channel__layout {
     display: flex;
     align-items: center;
   }
+
   img {
     border-radius: 50%;
     width: 50px;
@@ -109,6 +117,7 @@ const SubscriptBtn = styled.button`
   background-color: ${(props) => props.theme.accentColor};
   color: white;
   border-radius: 4px;
+
   &:hover {
     background-color: black;
   }
@@ -118,11 +127,15 @@ const Description = styled.p`
   width: 60%;
   margin: 24px 0px;
   font-size: 14px;
-  line-height: 2.4rem;
+  line-height: 1.6rem;
 
   @media all and (max-width: 1023px) {
     width: 100%;
     border-bottom: 1px solid lightgray;
+  }
+
+  @media all and (max-width: 767px) {
+    font-size: 13px;
   }
 `;
 
@@ -131,7 +144,7 @@ const Playlist = styled.ul`
   width: 100%;
 `;
 
-const Detail = ({ videos, openNav, youtube }: IDetailProps) => {
+const Detail = ({ videos, openNav, youtube, setOpenNav }: IDetailProps) => {
   const { videoId } = useParams();
   const [channelInfo, setChannelInfo] = useState<IChannel[]>([]);
 
@@ -147,6 +160,10 @@ const Detail = ({ videos, openNav, youtube }: IDetailProps) => {
       .then((result: []) => setChannelInfo(result));
   }, [video]);
 
+  useEffect(() => {
+    setOpenNav(false);
+  }, []);
+
   return (
     <>
       <HelmetProvider>
@@ -159,7 +176,7 @@ const Detail = ({ videos, openNav, youtube }: IDetailProps) => {
           <IFrameWrap>
             <IFrame
               datatype="text/html"
-              src={`https://www.youtube.com/embed/${video?.id}`}
+              src={`https://www.youtube.com/embed/${video?.id}?wmode=opaque`}
               frameBorder="0"
               allowFullScreen
             ></IFrame>
