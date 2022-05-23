@@ -13,6 +13,7 @@ const Layout = styled.div`
 const Side = styled.div`
   position: fixed;
   border-right: 1px solid lightgray;
+  z-index: 400;
 `;
 
 const Main = styled.div<{ openNav: boolean }>`
@@ -109,7 +110,12 @@ function App({ youtube }: IYoutube) {
             <Route
               path="/detail/:videoId"
               element={
-                <Detail videos={videos} openNav={openNav} youtube={youtube} />
+                <Detail
+                  videos={videos}
+                  openNav={openNav}
+                  setOpenNav={setOpenNav}
+                  youtube={youtube}
+                />
               }
             />
           </Routes>
